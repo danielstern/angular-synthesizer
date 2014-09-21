@@ -25,9 +25,13 @@
               scope.autotune = true;
 
               scope.state = {
-                  wave: 'SQUARE',
                   playing: false
               };
+
+              scope.oscillators = [{
+                wave:"SQUARE",
+                interval:1
+              }]
           },
           controller: function($scope, $timeout) {
 

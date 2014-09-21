@@ -18,29 +18,28 @@
     <!-- endbuild -->
 </head>
 <style>
-  .keyboard .key {
+.keyboard .key {
     height: 100px;
     width: 32px;
     background-color: white;
-  }
+}
+.keyboard .key:nth-child(12n-3),
+.keyboard .key:nth-child(12n-5),
+.keyboard .key:nth-child(12n-7),
+.keyboard .key:nth-child(12n-10),
+.keyboard .key:nth-child(12n-12)
+/*.keyboard .key:nth-child(11)*/
 
-  .keyboard .key:nth-child(12n-3),
-  .keyboard .key:nth-child(12n-5),
-  .keyboard .key:nth-child(12n-7),
-  .keyboard .key:nth-child(12n-10),
-  .keyboard .key:nth-child(12n-12)
-  /*.keyboard .key:nth-child(11)*/
-   {
+{
     height: 70px;
     background-color: black;
     margin-left: -10px;
     z-index: 10;
     position: absolute;
     text-align: center;
-    color:white;
+    color: white;
     width: 20px;
-  }
-  
+}
 </style>
 
 <body ng-app=ngSynthesizer>
@@ -58,24 +57,14 @@
                 </button>
             </DIV>
 
-     <!--        <div class=form-group>
-                <button ng-repeat='scale in ["harmonic minor","major","major pentatonic","minor pentatonic","natural minor"]' class='btn btn-warning' ng-click="setScale(scale)">
-                    {{scale}}
-                </button>
-            </div>
- -->
-                <oscillator wave=TRIANGLE >
-                </oscillator>
+            <oscillator wave=TRIANGLE interval="1">
+            </oscillator>
 
-                <oscillator wave=SINE interval="2">
-                </oscillator>
-<!-- 
-                <oscillator wave=SINE interval=4/3>
-                  <input type=range ng-model=interval min=1 max=2 step=0.01>
-                </oscillator> -->
+            <oscillator wave=SINE interval="2">
+            </oscillator>
 
-            </div>
-        </ng-synthesizer>
+    </div>
+    </ng-synthesizer>
     </div>
 
 

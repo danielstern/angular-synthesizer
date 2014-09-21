@@ -1,6 +1,8 @@
 <form  class='col-xs-4 form'>
 	<legend>Oscillator {{$index}}</legend>
-	<button class='btn btn-default' ng-click='setWave("TRIANGLE")'>TRIANGLE</button>
-	<button class='btn btn-default' ng-click='setWave("SAWTOOTH")'>SAWTOOTH</button>
-	<button class='btn btn-default' ng-click='setWave("SQUARE")'>SQUARE</button>
+
+	<button ng-repeat="waveform in ['TRIANGLE','SAWTOOTH','SINE','SQUARE']" class='btn btn-default' ng-class="{'active': wave==waveform}" ng-click='setWave(waveform)'>{{waveform}}</button>
+	<label>Interval
+		<input class=form-control ng-model=interval type=range min=1 max=2 step=0.01>
+	</label>
 </form>

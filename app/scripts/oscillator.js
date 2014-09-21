@@ -85,6 +85,7 @@ angular.module("ngSynthesizer")
 
 
                 $scope.$watch("state", function(state) {
+                  if (!state) return;
                     if (state.playing) {
                         oscillator.start();
                     } else {

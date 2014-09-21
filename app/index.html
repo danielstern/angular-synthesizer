@@ -25,49 +25,26 @@ oscillator {
 </style>
 
 <body ng-app=ngSynthesizer>
-    <!--[if lt IE 10]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
 
     <div class="container">
         <ng-synthesizer note=A4 scale="harmonic minor">
-            <button ng-if=playing ng-click=stop()>
-                stop
-            </button>
-            <button ng-if=!playing ng-click=play()>
-                start
-            </button>
 
             <div class=form-group>
-            <label>
-            frequency - {{note.latin()}}
-            <input type=range ng-model=frequency min={{min}} max={{max}}>
-            </label>
-            <!-- note? {{scale}} -->
-            <label>Autotune
-              <input type=checkbox class=form-control ng-model=autotune name=Autotune label=autotune>
-            </label>
+
             </div>
 
             <div class=form-group>
-              <button ng-repeat="tone in tones" ng-click='playNote(tone)'>
+            <button ng-repeat="tone in tones" class='btn btn-large btn-default' ng-mousedown='play(tone)'  ng-mouseup='stop()' accesskey={{tone.latin()}}>
                 {{tone.latin()}}
-              </button>
-
-            <!-- <label>NOTE
-                <select class='form-control' ng-model=note ng-options='note.latin() for note in tones'>
-                </select>
-            </label> -->
-
+            </button>
+            </DIV>
 
             <label>SCALES
                 <select class='form-control' ng-model=scale ng-options='scale for scale in ["harmonic minor","major","major pentatonic","minor pentatonic","natural minor"]'>
                 </select>
             </label>
 
-
-            <oscillator wave=SINE>
+            <oscillator wave=SINE ng-repeat="tube in [1,2,3,4,5]">
                 <select ng-model=wave>
                     <option>SINE</option>
                     <option>SAWTOOTH</option>
@@ -75,15 +52,7 @@ oscillator {
                     <option>TRIANGLE</option>
                 </select>
             </oscillator>
-            <oscillator wave=SAWTOOTH>
-                <select ng-model=wave>
-                    <option>SINE</option>
-                    <option>SAWTOOTH</option>
-                    <option>SQUARE</option>
-                    <option>TRIANGLE</option>
-                </select>
-            </oscillator>
-
+  
         </ng-synthesizer>
 
     </div>

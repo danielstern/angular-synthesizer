@@ -7,13 +7,13 @@
           return new webkitAudioContext(); // Create audio container	
       })
 
-  .factory('Oscillator',function(audioContext){
-  	return function() {
-  		var oscillator = audioContext.createOscillator(); // Create sound source
-      oscillator.connect(audioContext.destination); // Connect sound to output
-      return oscillator;
+  .factory('Oscillator', function(audioContext) {
+      return function() {
+          var oscillator = audioContext.createOscillator(); // Create sound source
+          oscillator.connect(audioContext.destination); // Connect sound to output
+          return oscillator;
 
-  	}
+      }
   })
 
   .directive('ngSynthesizer', function() {
@@ -31,24 +31,17 @@
               scope.music = MUSIC;
               scope.autotune = true;
 
-
               scope.state = {
                   wave: 'SQUARE',
                   playing: false
               };
           },
-          controller: function($scope,$timeout) {
+          controller: function($scope, $timeout) {
 
-          		$scope.playNote = function(note) {
-          			if (!note.frequency) note = Note.fromLatin(note);
-          			$scope.note = note;
-          			$scope.play();
-          			$timeout(function(){
-          				$scope.stop();
-          			},300);
-          		}
-
-              $scope.play = function() {
+              $scope.play = function(note) {
+                  if (note) {
+                      $scope.setNote(note);
+                  }
                   $scope.playing = true;
                   $scope.state.playing = true;
               }
@@ -63,23 +56,26 @@
                   $scope.note = val;
               }
 
-              $scope.$watch("frequency", function(val) {
+              // $scope.$watch("frequency", function(val) {
 
-                  if (!$scope.autotune) {
-                      $scope.state.frequency = val;
-                  } else if ($scope.tones) {
-                      var range = $scope.max - $scope.min;
-                      var percentage = (val / range) - 1;
-                      var tonesIndex = Math.floor(($scope.tones.length - 1) * percentage);
-                      var tone = $scope.tones[tonesIndex];
-                      $scope.state.frequency = tone.frequency();
-                  }
-              });
+              //     if (!$scope.autotune) {
+              //         $scope.state.frequency = val;
+              //     } else if ($scope.tones) {
+              //         var range = $scope.max - $scope.min;
+              //         var percentage = (val / range) - 1;
+              //         var tonesIndex = Math.floor(($scope.tones.length) * percentage);
+              //         console.log("tone index?",tonesIndex);
+              //         var tone = $scope.tones[tonesIndex];
+              //         $scope.state.frequency = tone.frequency();
+              //     }
+              // });
 
 
               $scope.$watch("scale", function(val) {
+              	console.log("scale change..",val);
                   if (val) {
                       $scope.tones = $scope.note.scale(val || 'major');
+                      console.log("scope tones?",$scope.tones);
                       $scope.min = $scope.tones[0].frequency();
                       $scope.max = $scope.tones[$scope.tones.length - 1].frequency();
                   }
@@ -91,11 +87,6 @@
                       $scope.frequency = val.frequency();
                   }
               });
-
-              $scope.$watch("wave", function(val) {
-                  $scope.state.wave = val;
-              });
-
           }
       }
   })
@@ -104,13 +95,10 @@
       return {
           restrict: "AE",
           scope: true,
-          link: function(scope, elem, attrs) {
+          controller: function($scope) {
 
-              scope.wave = attrs.wave || "SINE";
-          },
-          controller: function($scope, audioContext) {
+          		$scope.wave = "SINE";
 
-              $scope.context = audioContext;
               $scope.playing = false;
 
               $scope.$watch("wave", function(val) {
@@ -130,8 +118,6 @@
                   if ($scope.oscillator) {
                       $scope.oscillator.frequency.value = state.frequency;
                   }
-
-
               }, true);
 
               $scope.startTone = function() {
@@ -141,11 +127,11 @@
                   }
 
                   $scope.oscillator = new Oscillator();
-                  $scope.oscillator.frequency.value = $scope.frequency || 320;
-                  $scope.oscillator.noteOn(1); // Play instantly
 
+                  $scope.oscillator.frequency.value = $scope.frequency || 320;
                   $scope.oscillator.type = $scope.oscillator[$scope.wave];
 
+                  $scope.oscillator.noteOn(1); // Play instantly
               }
 
               $scope.stop = function() {

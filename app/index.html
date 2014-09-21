@@ -18,10 +18,7 @@
     <!-- endbuild -->
 </head>
 <style>
-oscillator {
-    display: block;
-    border: 1px solid;
-}
+
 </style>
 
 <body ng-app=ngSynthesizer>
@@ -33,18 +30,19 @@ oscillator {
 
             </div>
 
-            <div class=form-group>
-            <button ng-repeat="tone in tones" class='btn btn-large btn-default' ng-mousedown='play(tone)'  ng-mouseup='stop()' accesskey={{tone.latin()}}>
+            <div class="form-group jumbotron">
+            <button ng-repeat="tone in tones" class='btn btn-lg btn-default' ng-keydown='play(tone)' ng-keyup='stop()' ng-mousedown='play(tone)'  ng-mouseup='stop()' accesskey={{tone.latin()}}>
                 {{tone.latin()}}
             </button>
             </DIV>
 
-            <label>SCALES
-                <select class='form-control' ng-model=scale ng-options='scale for scale in ["harmonic minor","major","major pentatonic","minor pentatonic","natural minor"]'>
-                </select>
-            </label>
+            <div class=form-group>
+            <button ng-repeat='scale in ["harmonic minor","major","major pentatonic","minor pentatonic","natural minor"]' class='btn btn-warning' ng-click="setScale(scale)">
+                {{scale}}
+            </button>
+            </DIV>
 
-            <oscillator wave=SINE ng-repeat="tube in [1,2,3,4,5]">
+            <oscillator wave={{tube}} ng-repeat="tube in ['SAWTOOTH','SINE','SQUARE','TRIANGLE']">
                 <select ng-model=wave>
                     <option>SINE</option>
                     <option>SAWTOOTH</option>
@@ -52,9 +50,7 @@ oscillator {
                     <option>TRIANGLE</option>
                 </select>
             </oscillator>
-  
         </ng-synthesizer>
-
     </div>
 
 

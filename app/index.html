@@ -32,7 +32,7 @@
       <button ng-if=!playing ng-click=play()>
         start
       </button>
-      <input type=range ng-model=frequency min=0 max=720>     
+      <input type=range ng-model=frequency min=0 max=6>     
 
       <oscillator wave=SINE> 
         <select ng-model=wave>
@@ -83,6 +83,7 @@
 
         <!-- build:js({app,.tmp}) scripts/main.js -->
         <script src="scripts/webaudioshim.js"></script>
+        <script src="scripts/music.js"></script>
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
 </body>

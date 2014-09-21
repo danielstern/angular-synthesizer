@@ -18,7 +18,6 @@
     <!-- endbuild -->
 </head>
 <style>
-
 </style>
 
 <body ng-app=ngSynthesizer>
@@ -31,25 +30,38 @@
             </div>
 
             <div class="form-group jumbotron">
-            <button ng-repeat="tone in tones" class='btn btn-lg btn-default' ng-keydown='play(tone)' ng-keyup='stop()' ng-mousedown='play(tone)'  ng-mouseup='stop()' accesskey={{tone.latin()}}>
-                {{tone.latin()}}
-            </button>
+                <button ng-repeat="tone in tones" class='btn btn-lg btn-default' ng-keydown='play(tone)' ng-keyup='stop()' ng-mousedown='play(tone)' ng-mouseup='stop()' accesskey={{tone.latin()}}>
+                    {{tone.latin()}}
+                </button>
             </DIV>
 
             <div class=form-group>
-            <button ng-repeat='scale in ["harmonic minor","major","major pentatonic","minor pentatonic","natural minor"]' class='btn btn-warning' ng-click="setScale(scale)">
-                {{scale}}
-            </button>
+                <button ng-repeat='scale in ["harmonic minor","major","major pentatonic","minor pentatonic","natural minor"]' class='btn btn-warning' ng-click="setScale(scale)">
+                    {{scale}}
+                </button>
             </DIV>
 
-            <oscillator wave={{tube}} ng-repeat="tube in ['SAWTOOTH','SINE','SQUARE','TRIANGLE']">
-                <select ng-model=wave>
-                    <option>SINE</option>
-                    <option>SAWTOOTH</option>
-                    <option>SQUARE</option>
-                    <option>TRIANGLE</option>
-                </select>
-            </oscillator>
+            <div class='form-group'>
+                <oscillator wave=SAWTOOTH>
+                    <select ng-model=wave>
+                        <option>SINE</option>
+                        <option>SAWTOOTH</option>
+                        <option>SQUARE</option>
+                        <option>TRIANGLE</option>
+                    </select>
+                </oscillator>
+            </div>
+
+            <div class='form-group'>
+                <oscillator wave=SINE interval=fifth>
+                    <select ng-model=wave>
+                        <option>SINE</option>
+                        <option>SAWTOOTH</option>
+                        <option>SQUARE</option>
+                        <option>TRIANGLE</option>
+                    </select>
+                </oscillator>
+            </div>
         </ng-synthesizer>
     </div>
 

@@ -85,6 +85,10 @@
           	attrs.$observe("wave", function() {
           	    scope.wave = attrs.wave;
           	});
+
+          	attrs.$observe("interval", function() {
+          	    scope.interval = attrs.interval;
+          	});
           },
           controller: function($scope) {
 
@@ -100,7 +104,12 @@
 
                   if (state.playing) {
                       $scope.startTone();
-                      $scope.oscillator.frequency.value = state.frequency;
+
+                      var frequency = state.frequency;
+                      if ($scope.interval) {
+                      	frequency = $scope.note.add($scope.interval).frequency();
+                      }
+                      $scope.oscillator.frequency.value = frequency;
                   } else {
                       $scope.stop();
                   }
@@ -114,6 +123,13 @@
                   }
 
                   $scope.oscillator = new Oscillator();
+
+                  var frequency = $scope.frequency;
+                  if ($scope.interval) {
+                  	frequency = $scope.note.add($scope.interval).frequency();
+                  }
+
+                  console.log("frequency?",frequency);
 
                   $scope.oscillator.frequency.value = $scope.frequency;
                   $scope.oscillator.type = $scope.oscillator[$scope.wave];

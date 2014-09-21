@@ -33,7 +33,7 @@
                 interval:1
               }]
           },
-          controller: function($scope, $timeout) {
+          controller: ["$scope","$timeout",function($scope, $timeout) {
 
               $scope.play = function(note) {
                   if (note) {
@@ -82,6 +82,6 @@
                       $scope.frequency = val;
                   }
               });
-          }
+          }]
       }
   })

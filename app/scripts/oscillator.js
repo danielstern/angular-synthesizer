@@ -1,5 +1,5 @@
 angular.module("ngSynthesizer")
-    .factory('Oscillator', function($interval, NativeOscillatorFactory) {
+    .factory('Oscillator', ["$interval", "NativeOscillatorFactory",function($interval, NativeOscillatorFactory) {
         return function() {
             var _oscillator = NativeOscillatorFactory();
 
@@ -44,15 +44,15 @@ angular.module("ngSynthesizer")
               _oscillatorRunning = false;
             }
         }
-    })
-    .factory('NativeOscillatorFactory',function(audioContext){
+    }])
+    .factory('NativeOscillatorFactory',["audioContext",function(audioContext){
       return function(){
         var _oscillator = audioContext.createOscillator(); // Create sound source
           _oscillator.connect(audioContext.destination); // Connect sound to output
           return _oscillator;
       }
-    })
-    .directive('oscillator', function(Oscillator) {
+    }])
+    .directive('oscillator', ["Oscillator",function(Oscillator) {
         return {
             restrict: "AE",
             scope: true,
@@ -66,7 +66,7 @@ angular.module("ngSynthesizer")
                     scope.interval = attrs.interval;
                 });
             },
-            controller: function($scope,Oscillator) {
+            controller: ["$scope","Oscillator",function($scope,Oscillator) {
 
               var oscillator = new Oscillator();
 
@@ -94,6 +94,6 @@ angular.module("ngSynthesizer")
 
                     oscillator.frequency = $scope.frequency * ($scope.interval || 1);
                 }, true);
-            }
+            }]
         }
-    })
+    }])

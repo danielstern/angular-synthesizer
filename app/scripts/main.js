@@ -3,10 +3,24 @@
   .run(function() {
 
   })
+      .service('audioContext', function() {
+          return new webkitAudioContext(); // Create audio container	
+      })
 
   .directive('ngSynthesizer', function() {
       return {
           restrict: "AE",
+          link: function(scope, elem, attrs) {
+          	attrs.$observe("note",function(){
+         			scope.note = Note.fromLatin(attrs.note || "E4");
+          	});
+
+          	 	attrs.$observe("scale",function(val){
+          				scope.scale = attrs.scale;
+          	 	});
+
+          	scope.music = MUSIC;
+          },
           controller: function($scope) {
 
               $scope.play = function() {
@@ -20,21 +34,37 @@
               }
 
               $scope.$watch("frequency", function(val) {
-
-              	var n = Note.fromLatin('A4');
-              	// console.log(n); //prints ({coord:[0, 0]})
-
-              	var majorScale = n.scale('major');
-
-              	//getters
-              	// var freq = n.frequency(); // returns 440
-              	// var noteName = n.latin(); // returns "A"
-              	// var octave = n.octave(); // returns 4 
-
-              	console.log("major scale?",majorScale);
-
-                  $scope.state.frequency = majorScale[val].frequency();
+              		if (!$scope.autotune) {
+                  	$scope.state.frequency = val;
+              		} else {
+              			var range = $scope.max - $scope.min;
+              			var percentage = (val / range) - 1;
+              			var tonesIndex = Math.floor($scope.tones.length * percentage);
+              			// console.log('percentage?',percentage);
+              			// console.log("tone index..?",tonesIndex);
+              			var tone = $scope.tones[tonesIndex];
+              			// $scope.note = tone;
+              			$scope.state.frequency = tone.frequency();
+              		}
               })
+
+              $scope.$watch("scale",function(val){
+              	console.log("val changed...",val);
+              	if (val) {
+              		$scope.tones = $scope.note.scale(val || 'major');
+              		$scope.min = $scope.tones[0].frequency();
+              		$scope.max = $scope.tones[$scope.tones.length - 1].frequency();
+              	}
+              })
+
+              $scope.$watch("note", function(val) {
+                  if (val) {
+                      $scope.state.frequency = val.frequency();
+                      $scope.frequency = val.frequency();
+
+                  }
+              })
+
 
               $scope.$watch("wave", function(val) {
                   $scope.state.wave = val;
@@ -52,10 +82,14 @@
               restrict: "AE",
               scope: true,
               link: function(scope, elem, attrs) {
-                  scope.context = new webkitAudioContext(); // Create audio container			
+
+
+
                   scope.wave = attrs.wave || "SINE";
               },
-              controller: function($scope) {
+              controller: function($scope, audioContext) {
+
+                  $scope.context = audioContext;
                   $scope.playing = false;
 
                   $scope.$watch("wave", function(val) {

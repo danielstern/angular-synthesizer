@@ -7,39 +7,53 @@
   })
 
   .directive('ngSynthesizer', function() {
-  	return {
-  		restrict:"AE",
-  		link:function(scope,elem,attrs){
-  			  scope.context = new webkitAudioContext(); // Create audio container			
-  			  scope.frequency = attrs.frequency;
-  			  console.log("attrs?",attrs);
-  		},
-  		controller:function($scope) {
-  			$scope.playing = false;
+      return {
+          restrict: "AE",
+          controller: function ($scope) {
+              $scope.playing = true;
+          }
 
-  			$scope.$watch("frequency",function(val){
-  				console.log("frequency changed...",val);
-  				if ($scope.oscillator) {
-  					$scope.oscillator.frequency.value = val;
-  				}
+      }
+  })
+      .directive('oscillator', function() {
+          return {
+              restrict: "AE",
+              require: "^ngSynthesizer",
+              link: function(scope, elem, attrs) {
+                  scope.context = new webkitAudioContext(); // Create audio container			
+                  scope.frequency = attrs.frequency;
+              },
+              controller: function($scope) {
+                  $scope.playing = false;
 
-  			})
+                  $scope.$watch("frequency", function(val) {
+                      if ($scope.oscillator) {
+                          $scope.oscillator.frequency.value = val;
+                      }
+                  })
 
-  			$scope.play = function() {
-  				$scope.playing = true;
+                  $scope.wave = "SINE";
 
-  				$scope.oscillator = $scope.context.createOscillator(); // Create sound source
-  				$scope.oscillator.connect($scope.context.destination); // Connect sound to output
-  				$scope.oscillator.frequency.value = $scope.frequency || 320;
-  				$scope.oscillator.noteOn(1); // Play instantly
+                  $scope.$watch("wave", function(val) {
+                      if ($scope.oscillator) {
+                          $scope.oscillator.type = $scope.oscillator[val];
+                      }
+                  })
 
-  				window.oscillator = $scope.oscillator;
-  			}
+                  $scope.play = function() {
+                      $scope.playing = true;
+                      $scope.oscillator = $scope.context.createOscillator(); // Create sound source
+                      $scope.oscillator.connect($scope.context.destination); // Connect sound to output
+                      $scope.oscillator.frequency.value = $scope.frequency || 320;
+                      $scope.oscillator.noteOn(1); // Play instantly
 
-  			$scope.stop = function() {
-  				$scope.oscillator.noteOff(1);
-  				$scope.playing = false;
-  			}
-  		}
-  	}
- })
+                      window.oscillator = $scope.oscillator;
+                  }
+
+                  $scope.stop = function() {
+                      $scope.oscillator.noteOff(1);
+                      $scope.playing = false;
+                  }
+              }
+          }
+      })

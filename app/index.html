@@ -31,28 +31,34 @@ oscillator {
 
 
     <div class="container">
-        hi!
-
         <ng-synthesizer note=A4 scale="harmonic minor">
-            {{frequency}} - {{wave}}
             <button ng-if=playing ng-click=stop()>
                 stop
             </button>
             <button ng-if=!playing ng-click=play()>
                 start
             </button>
-            frequency
+
+            <div class=form-group>
+            <label>
+            frequency - {{note.latin()}}
             <input type=range ng-model=frequency min={{min}} max={{max}}>
-
-            <!-- note? {{scale}} -->
-            <label>Lock Frequency
-              <input type=checkbox ng-model=autotune>
             </label>
+            <!-- note? {{scale}} -->
+            <label>Autotune
+              <input type=checkbox class=form-control ng-model=autotune name=Autotune label=autotune>
+            </label>
+            </div>
 
-            <label>NOTE
+            <div class=form-group>
+              <button ng-repeat="tone in tones" ng-click='playNote(tone)'>
+                {{tone.latin()}}
+              </button>
+
+            <!-- <label>NOTE
                 <select class='form-control' ng-model=note ng-options='note.latin() for note in tones'>
                 </select>
-            </label>
+            </label> -->
 
 
             <label>SCALES
@@ -70,46 +76,6 @@ oscillator {
                 </select>
             </oscillator>
             <oscillator wave=SAWTOOTH>
-                <select ng-model=wave>
-                    <option>SINE</option>
-                    <option>SAWTOOTH</option>
-                    <option>SQUARE</option>
-                    <option>TRIANGLE</option>
-                </select>
-            </oscillator>
-            <oscillator wave=SAWTOOTH>
-                <select ng-model=wave>
-                    <option>SINE</option>
-                    <option>SAWTOOTH</option>
-                    <option>SQUARE</option>
-                    <option>TRIANGLE</option>
-                </select>
-            </oscillator>
-            <oscillator wave=SAWTOOTH>
-                <select ng-model=wave>
-                    <option>SINE</option>
-                    <option>SAWTOOTH</option>
-                    <option>SQUARE</option>
-                    <option>TRIANGLE</option>
-                </select>
-            </oscillator>
-            <oscillator wave=SAWTOOTH>
-                <select ng-model=wave>
-                    <option>SINE</option>
-                    <option>SAWTOOTH</option>
-                    <option>SQUARE</option>
-                    <option>TRIANGLE</option>
-                </select>
-            </oscillator>
-            <oscillator wave=SAWTOOTH>
-                <select ng-model=wave>
-                    <option>SINE</option>
-                    <option>SAWTOOTH</option>
-                    <option>SQUARE</option>
-                    <option>TRIANGLE</option>
-                </select>
-            </oscillator>
-            <oscillator wave=TRIANGLE>
                 <select ng-model=wave>
                     <option>SINE</option>
                     <option>SAWTOOTH</option>

@@ -56,6 +56,7 @@ angular.module("ngSynthesizer")
         return {
             restrict: "AE",
             scope: true,
+            templateUrl: 'tmpl/oscillatorControl.html',
             link: function(scope, elem, attrs) {
                 attrs.$observe("wave", function() {
                     scope.wave = attrs.wave;
@@ -76,6 +77,11 @@ angular.module("ngSynthesizer")
                 $scope.$watch("interval", function(val) {
                        oscillator.frequency = $scope.frequency * $scope.interval;
                 })
+
+                $scope.setWave = function(val) {
+                  console.log("Setting waveform...")
+                  $scope.wave = val;
+                }
 
 
                 $scope.$watch("state", function(state) {

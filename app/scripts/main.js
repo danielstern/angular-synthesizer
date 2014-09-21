@@ -48,22 +48,34 @@
                   $scope.note = val;
               }
 
-              $scope.setScale = function(val) {
-              	$scope.scale = val;
+
+
+              // $scope.setScale = function(val) {
+              // 	$scope.scale = val;
+              // }
+
+              // $scope.$watch("scale", function(val) {
+              //     if (val) {
+              //         $scope.tones = $scope.note.scale(val || 'major');
+              //         $scope.min = $scope.tones[0].frequency();
+              //         $scope.max = $scope.tones[$scope.tones.length - 1].frequency();
+              //     }
+              // });
+
+              // var base = ;
+              var tones = [110]
+              for (var i = 0; i < 33; i++) {
+                tones.push(tones[i] * 1.06)
+
               }
 
-              $scope.$watch("scale", function(val) {
-                  if (val) {
-                      $scope.tones = $scope.note.scale(val || 'major');
-                      $scope.min = $scope.tones[0].frequency();
-                      $scope.max = $scope.tones[$scope.tones.length - 1].frequency();
-                  }
-              });
+              // $scope.tones = [440,550,660,770];
+              $scope.tones = tones;
 
               $scope.$watch("note", function(val) {
                   if (val) {
-                      $scope.state.frequency = val.frequency();
-                      $scope.frequency = val.frequency();
+                      $scope.state.frequency = val;
+                      $scope.frequency = val;
                   }
               });
           }

@@ -1,38 +1,51 @@
   angular.module("ngSynthesizer", [])
 
   .run(function() {
-      console.log("synth run...");
-
-
+      // console.log("synth run...");
   })
 
   .directive('ngSynthesizer', function() {
       return {
           restrict: "AE",
-          controller: function ($scope) {
-              $scope.playing = true;
-          }
+          controller: function($scope) {
 
+              $scope.play = function() {
+                  $scope.playing = true;
+                  $scope.state.playing = true;
+              }
+
+              $scope.stop = function() {
+                  $scope.playing = false;
+                  $scope.state.playing = false;
+              }
+
+              $scope.$watch("frequency", function(val) {
+                  $scope.state.frequency = val;
+              })
+
+              $scope.$watch("wave", function(val) {
+                  $scope.state.wave = val;
+              })
+
+              $scope.state = {
+                  wave: 'SQUARE',
+                  playing: false
+              }
+          }
       }
   })
       .directive('oscillator', function() {
           return {
               restrict: "AE",
-              require: "^ngSynthesizer",
+              scope: true,
               link: function(scope, elem, attrs) {
                   scope.context = new webkitAudioContext(); // Create audio container			
-                  scope.frequency = attrs.frequency;
+                  scope.wave = attrs.wave || "SINE";
+                  // scope.oscillator = scope.context.createOscillator(); // Create sound source
+                  // scope.frequency = attrs.frequency;
               },
               controller: function($scope) {
                   $scope.playing = false;
-
-                  $scope.$watch("frequency", function(val) {
-                      if ($scope.oscillator) {
-                          $scope.oscillator.frequency.value = val;
-                      }
-                  })
-
-                  $scope.wave = "SINE";
 
                   $scope.$watch("wave", function(val) {
                       if ($scope.oscillator) {
@@ -40,19 +53,47 @@
                       }
                   })
 
-                  $scope.play = function() {
-                      $scope.playing = true;
+                  $scope.$watch("state", function(state) {
+
+                      if (state.playing) {
+                          $scope.startTone();
+                      } else {
+                          $scope.stop();
+                      }
+
+                      if ($scope.oscillator) {
+                          $scope.oscillator.frequency.value = state.frequency;
+                      }
+
+
+                  }, true);
+
+                  $scope.startTone = function() {
+
+                      if ($scope.oscillator) {
+                          return;
+                      }
+
                       $scope.oscillator = $scope.context.createOscillator(); // Create sound source
                       $scope.oscillator.connect($scope.context.destination); // Connect sound to output
                       $scope.oscillator.frequency.value = $scope.frequency || 320;
                       $scope.oscillator.noteOn(1); // Play instantly
 
-                      window.oscillator = $scope.oscillator;
+                      console.log("seting wave type...",$scope.wave);
+                      $scope.oscillator.type = $scope.oscillator[$scope.wave];
+
+                      // window.oscillator = $scope.oscillator;
                   }
 
                   $scope.stop = function() {
+
+                      if (!$scope.oscillator) {
+                          return;
+                      }
+
                       $scope.oscillator.noteOff(1);
                       $scope.playing = false;
+                      $scope.oscillator = null;
                   }
               }
           }

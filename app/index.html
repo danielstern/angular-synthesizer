@@ -32,9 +32,9 @@
       <button ng-if=!playing ng-click=play()>
         start
       </button>
-      <input type=range ng-model=frequency min=0 max=720>
+      <input type=range ng-model=frequency min=0 max=720>     
 
-      <oscillator>
+      <oscillator wave=SINE> 
         <select ng-model=wave>
           <option>SINE</option>
           <option>SAWTOOTH</option>
@@ -42,8 +42,7 @@
           <option>TRIANGLE</option>
         </select>
       </oscillator>
-
-      <oscillator>
+      <oscillator wave=SAWTOOTH>
         <select ng-model=wave>
           <option>SINE</option>
           <option>SAWTOOTH</option>
@@ -51,8 +50,7 @@
           <option>TRIANGLE</option>
         </select>
       </oscillator>
-
-      <oscillator>
+      <oscillator wave=TRIANGLE>
         <select ng-model=wave>
           <option>SINE</option>
           <option>SAWTOOTH</option>

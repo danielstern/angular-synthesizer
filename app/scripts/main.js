@@ -7,14 +7,7 @@
           return new webkitAudioContext(); // Create audio container	
       })
 
-  .factory('Oscillator', function(audioContext) {
-      return function() {
-          var oscillator = audioContext.createOscillator(); // Create sound source
-          oscillator.connect(audioContext.destination); // Connect sound to output
-          return oscillator;
 
-      }
-  })
 
   .directive('ngSynthesizer', function() {
       return {
@@ -73,79 +66,6 @@
                       $scope.frequency = val.frequency();
                   }
               });
-          }
-      }
-  })
-
-  .directive('oscillator', function(Oscillator) {
-      return {
-          restrict: "AE",
-          scope: true,
-          link:function(scope,elem,attrs) {
-          	attrs.$observe("wave", function() {
-          	    scope.wave = attrs.wave;
-          	});
-
-          	attrs.$observe("interval", function() {
-          	    scope.interval = attrs.interval;
-          	});
-          },
-          controller: function($scope) {
-
-          		$scope.wave = "SINE";
-
-              $scope.$watch("wave", function(val) {
-                  if ($scope.oscillator) {
-                      $scope.oscillator.type = $scope.oscillator[val];
-                  }
-              })
-
-              $scope.$watch("state", function(state) {
-
-                  if (state.playing) {
-                      $scope.startTone();
-
-                      var frequency = state.frequency;
-                      if ($scope.interval) {
-                      	frequency = $scope.note.add($scope.interval).frequency();
-                      }
-                      $scope.oscillator.frequency.value = frequency;
-                  } else {
-                      $scope.stop();
-                  }
-
-              }, true);
-
-              $scope.startTone = function() {
-
-                  if ($scope.oscillator) {
-                      return;
-                  }
-
-                  $scope.oscillator = new Oscillator();
-
-                  var frequency = $scope.frequency;
-                  if ($scope.interval) {
-                  	frequency = $scope.note.add($scope.interval).frequency();
-                  }
-
-                  console.log("frequency?",frequency);
-
-                  $scope.oscillator.frequency.value = $scope.frequency;
-                  $scope.oscillator.type = $scope.oscillator[$scope.wave];
-
-                  $scope.oscillator.noteOn(1);
-              }
-
-              $scope.stop = function() {
-
-                  if (!$scope.oscillator) {
-                      return;
-                  }
-
-                  $scope.oscillator.noteOff(1);
-                  $scope.oscillator = null;
-              }
           }
       }
   })

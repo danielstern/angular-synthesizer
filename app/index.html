@@ -18,19 +18,42 @@
     <!-- endbuild -->
 </head>
 <style>
+  .keyboard .key {
+    height: 300px;
+    width: 72px;
+    background-color: white;
+  }
+
+  .keyboard .key:nth-child(2),
+  .keyboard .key:nth-child(4),
+  .keyboard .key:nth-child(7),
+  .keyboard .key:nth-child(9),
+  .keyboard .key:nth-child(11)
+   {
+    height: 300px;
+    background-color: black;
+    margin-left: -20px;
+    z-index: 10;
+    position: absolute;
+    text-align: center;
+    color:white;
+    width: 40px;
+    height: 200px;
+  }
+  
 </style>
 
 <body ng-app=ngSynthesizer>
 
     <div class="container">
-        <ng-synthesizer note=A4 scale="harmonic minor">
+        <ng-synthesizer note=C4 scale="harmonic minor">
 
             <div class=form-group>
 
             </div>
 
-            <div class="form-group jumbotron">
-                <button ng-repeat="tone in tones" class='btn btn-lg btn-default' ng-keydown='play(tone)' ng-keyup='stop()' ng-mousedown='play(tone)' ng-mouseup='stop()' accesskey={{tone.latin()}}>
+            <div class="form-group jumbotron keyboard">
+                <button ng-repeat="tone in tones" class='key' ng-mousedown='play(tone)' ng-mouseup='stop()' accesskey={{tone.latin()}}>
                     {{tone.latin()}}
                 </button>
             </DIV>
@@ -41,26 +64,17 @@
                 </button>
             </DIV>
 
-            <div class='form-group'>
                 <oscillator wave=SAWTOOTH>
-                    <select ng-model=wave>
-                        <option>SINE</option>
-                        <option>SAWTOOTH</option>
-                        <option>SQUARE</option>
-                        <option>TRIANGLE</option>
-                    </select>
+                  
                 </oscillator>
-            </div>
 
-            <div class='form-group'>
-                <oscillator wave=SINE interval=fifth>
-                    <select ng-model=wave>
-                        <option>SINE</option>
-                        <option>SAWTOOTH</option>
-                        <option>SQUARE</option>
-                        <option>TRIANGLE</option>
-                    </select>
+                <oscillator wave=SINE interval="2">
                 </oscillator>
+<!-- 
+                <oscillator wave=SINE interval=4/3>
+                  <input type=range ng-model=interval min=1 max=2 step=0.01>
+                </oscillator> -->
+
             </div>
         </ng-synthesizer>
     </div>
@@ -86,6 +100,7 @@
     <script src="scripts/webaudioshim.js"></script>
     <script src="scripts/music.js"></script>
     <script src="scripts/main.js"></script>
+    <script src="scripts/oscillator.js"></script>
     <!-- endbuild -->
 </body>
 

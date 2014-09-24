@@ -1,6 +1,13 @@
 angular.module("ngSynth.oscillator",[])
 
-.factory('Oscillator', ["$interval", "NativeOscillatorFactory",
+/**Oscillator Factory - Getter and Setters
+  frequency - the frequencyo f the oscillator (RW)
+  playing - if the oscillator is playing or not
+  start() - shortcut to set playing to true
+  stop() - shortcut to set playing to false
+**/
+
+.factory('Oscillator', ["$interval", "_NativeOscillatorFactory",
     function($interval, NativeOscillatorFactory) {
         return function() {
             var _oscillator = NativeOscillatorFactory();
@@ -24,15 +31,15 @@ angular.module("ngSynth.oscillator",[])
                 }
 
                 if (factory.playing) {
-                    factory.startTone();
+                    factory._startTone();
                 } else {
-                    factory.stopTone();
+                    factory._stopTone();
                 }
 
                 _oscillator.type = _oscillator[factory.wave];
             }, 1);
 
-            this.startTone = function() {
+            this._startTone = function() {
                 if (_oscillatorRunning) return;
                 _oscillator = NativeOscillatorFactory()
                 _oscillator.frequency.value = factory.frequency;
@@ -40,7 +47,7 @@ angular.module("ngSynth.oscillator",[])
                 _oscillatorRunning = true;
             };
 
-            this.stopTone = function() {
+            this._stopTone = function() {
                 if (!_oscillatorRunning) return;
                 _oscillator.noteOff(1);
                 _oscillatorRunning = false;
@@ -49,7 +56,7 @@ angular.module("ngSynth.oscillator",[])
     }
 ])
 
-.factory('NativeOscillatorFactory', ["audioContext",
+.factory('_NativeOscillatorFactory', ["audioContext",
     function(audioContext) {
         return function() {
             var _oscillator = audioContext.createOscillator(); // Create sound source
@@ -90,12 +97,7 @@ angular.module("ngSynth.oscillator",[])
                         oscillator.frequency = $scope.frequency * $scope.interval;
                     })
 
-                    $scope.setWave = function(val) {
-                        $scope.wave = val;
-                    }
-
                     $scope.$watch("playing",function(val){
-                      // console.log("Key is playing...?? osc");
                       if (val) {
                         oscillator.start();
                       } else {
@@ -104,32 +106,12 @@ angular.module("ngSynth.oscillator",[])
                     })
 
                     $scope.$watch("tone",function(val){
-                      console.log("tone schange....",val);
-                      // if (val) {
-                      //   oscillator.start();
-                      // } else {
-                      //   oscillator.stop();
-                      // }
 
-                      // oscillator.frequency = $scope.frequency * ($scope.interval || 1);
                       setTimeout(function(){
-                      oscillator.frequency = val;
+                        oscillator.frequency = val;
                       },50);
                         
                     })
-
-
-
-                    // $scope.$watch("state", function(state) {
-                    //     if (!state) return;
-                    //     if (state.playing) {
-                    //         oscillator.start();
-                    //     } else {
-                    //         oscillator.stop();
-                    //     }
-
-                    //     oscillator.frequency = $scope.frequency * ($scope.interval || 1);
-                    // }, true);
                 }
             ]
         }

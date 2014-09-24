@@ -43,6 +43,10 @@
     /*background-color: sandybrown !important;*/
 }
 .key.mouseover {
+    background-color: lemonchiffon !important;
+}
+
+.key.playing {
     background-color: sandybrown !important;
 }
 
@@ -56,16 +60,16 @@
         <synth note=C4 scale="harmonic minor">
 
             <div keyboard class="keyboard">
-                <button key ng-repeat="tone in tones" ng-class="{'mouseover':mouseover,'activated':touchdown}" tone=tone class='key'> 
+                <button key ng-repeat="tone in tones" ng-class="{'mouseover':mouseover,'playing':playing}" tone=tone class='key'> 
                     
                     <oscillator tone=tone playing=playing wave=TRIANGLE interval="1">
                     </oscillator>
 
-                    <oscillator tone=tone playing=playing wave=SAWTOOTH interval="1">
+                    <oscillator tone=tone playing=playing wave=SINE interval="1">
                     </oscillator>
-
+<!-- 
                     <oscillator tone=tone playing=playing wave=SQUARE interval="1">
-                    </oscillator>
+                    </oscillator> -->
 
                 </button>
 

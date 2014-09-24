@@ -28,8 +28,6 @@
 .keyboard .key:nth-child(12n-7),
 .keyboard .key:nth-child(12n-10),
 .keyboard .key:nth-child(12n-12)
-/*.keyboard .key:nth-child(11)*/
-
 {
     height: 70px;
     background-color: black;
@@ -40,37 +38,44 @@
     color: white;
     width: 20px;
 }
+
+.key.activated {
+    /*background-color: sandybrown !important;*/
+}
+.key.mouseover {
+    background-color: sandybrown !important;
+}
+
 </style>
 
-<body ng-app=ngSynthesizer>
+<body ng-app=ngSynthKeyboard>
 
 
     <div class="container">
         <h1>html5 audio synthesizer</h1>
-        <ng-synthesizer note=C4 scale="harmonic minor">
+        <synth note=C4 scale="harmonic minor">
 
-            <div class=form-group>
+            <div keyboard class="keyboard">
+                <button key ng-repeat="tone in tones" ng-class="{'mouseover':mouseover,'activated':touchdown}" tone=tone class='key'> 
+                    
+                    <oscillator tone=tone playing=playing wave=TRIANGLE interval="1">
+                    </oscillator>
 
-            </div>
+                    <oscillator tone=tone playing=playing wave=SAWTOOTH interval="1">
+                    </oscillator>
 
-            <div class="keyboard">
-                <button ng-repeat="tone in tones" class='key' ng-mousedown='play(tone)' ng-mouseup='stop()' accesskey={{tone.latin()}}>
-                    {{tone.latin()}}
+                    <oscillator tone=tone playing=playing wave=SQUARE interval="1">
+                    </oscillator>
+
                 </button>
+
             </div>
 
-            <oscillator wave=TRIANGLE interval="1">
-            </oscillator>
-
-            <oscillator wave=SINE interval="2">
-            </oscillator>
-
-            <oscillator wave=SINE interval="1">
-            </oscillator>
+    
 
 
     </div>
-    </ng-synthesizer>
+    </synth>
     </div>
 
 
@@ -103,6 +108,7 @@
     <script src="scripts/music.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/oscillator.js"></script>
+    <script src="scripts/ngSynthesizer.js"></script>
     <!-- endbuild -->
 </body>
 

@@ -5,7 +5,7 @@ angular.module("ngSynthKeyboard", ['ngSynth'])
         restrict: "E",
         link: function(scope, elem, attrs) {
 
-            var tones = [130.813]
+            var tones = [130.813] //261.625565
             for (var i = 0; i < 33; i++) {
                 tones.push(tones[i] * 1.0595465)
 

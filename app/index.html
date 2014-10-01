@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>angular synthesizer</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="shortcut icon" href="/favicon.ico">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
@@ -22,6 +22,7 @@
     height: 100px;
     width: 32px;
     background-color: white;
+    -webkit-user-select: none;
 }
 .keyboard .key:nth-child(12n-3),
 .keyboard .key:nth-child(12n-5),
@@ -60,7 +61,7 @@
         <synth note=C4 scale="harmonic minor">
 
             <div keyboard class="keyboard">
-                <button key ng-repeat="tone in tones" ng-class="{'mouseover':mouseover,'playing':playing}" tone=tone class='key'> 
+                <button onclick="void(0)" key ng-repeat="tone in tones" ng-class="{'mouseover':mouseover,'playing':playing}" tone=tone class='key'> 
                     
                     <oscillator tone=tone playing=playing wave=TRIANGLE interval="1">
                     </oscillator>
@@ -88,6 +89,7 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

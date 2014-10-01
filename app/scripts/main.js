@@ -1,4 +1,4 @@
-angular.module("ngSynthKeyboard", ['ngSynth'])
+angular.module("ngSynthKeyboard", ['ngSynth','ngTouch'])
 
 .directive('synth', function() {
     return {
@@ -16,28 +16,33 @@ angular.module("ngSynthKeyboard", ['ngSynth'])
         }
     }
 })
-.directive("key",function(){
+.directive("key",function(ngSynth){
   return {
     restrict:"AE",
     scope:true,
     link:function(scope,elem) {
 
-      elem.on("mouseover",function(){
+      elem.on("mouseover touchstart",function(){
         scope.mouseover = true;
       });
 
-      elem.on("mouseout",function(){
+      elem.on("mouseout touchstart",function(){
         scope.mouseover = false;
       });
     },
     controller:function($scope,$window,$interval) {
 
-      $($window).on("mousedown",function(){
+      $($window).on("mousedown touchstart",function(){
+        ngSynth.toot();
         $scope.touchdown = true;
       })
 
-      $($window).on("mouseup",function(){
+      $($window).on("mouseup touchend",function(){
         $scope.touchdown = false;
+      });
+
+       $($window).on("selectstart",function(){
+          return false;
       });
 
       $scope.$watch(function(){

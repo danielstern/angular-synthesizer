@@ -33,7 +33,7 @@ angular.module('ngSynthKeyboard', ['ngSynth', 'ngTouch'])
       scope.touchkey = function(){
         scope.mouseover = true;
         scope.touchdown = true;
-        console.log("touchkey")
+        //console.log("touchkey")
       };
 
     },
@@ -47,11 +47,13 @@ angular.module('ngSynthKeyboard', ['ngSynth', 'ngTouch'])
         $scope.touchdown = false;
       });
 
+/* This makes all the keys play all at once. This serves as a negative confirmation that sound WILL NOT PLAY on ios without some help.
       $(window).on("touchstart",function(){
         //Apparently safari on ios requires sound be started by a user event?
         $scope.playing = true;
         console.log("touchstart")
       });
+*/
 /*
       $($window).on("click",function(){
         $scope.touchdown = true;
@@ -65,7 +67,7 @@ angular.module('ngSynthKeyboard', ['ngSynth', 'ngTouch'])
         if (val) {
           $scope.playing = true;
         } else {
-          //$scope.playing = false;
+          $scope.playing = false;
         }
       },true);
 

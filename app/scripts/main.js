@@ -1,4 +1,4 @@
-angular.module("ngSynthKeyboard", ['ngSynth'])
+angular.module('ngSynthKeyboard', ['ngSynth', 'ngTouch'])
 
 .directive('synth', function() {
     return {
@@ -29,6 +29,13 @@ angular.module("ngSynthKeyboard", ['ngSynth'])
       elem.on("mouseout",function(){
         scope.mouseover = false;
       });
+
+      scope.touchkey = function(){
+        scope.mouseover = true;
+        scope.touchdown = true;
+        console.log("touchkey")
+      };
+
     },
     controller:function($scope,$window,$interval) {
 
@@ -40,13 +47,25 @@ angular.module("ngSynthKeyboard", ['ngSynth'])
         $scope.touchdown = false;
       });
 
+      $(window).on("touchstart",function(){
+        //Apparently safari on ios requires sound be started by a user event?
+        $scope.playing = true;
+        console.log("touchstart")
+      });
+/*
+      $($window).on("click",function(){
+        $scope.touchdown = true;
+        console.log("click")
+      })
+*/
+
       $scope.$watch(function(){
         return $scope.mouseover && $scope.touchdown;
       },function(val){
         if (val) {
           $scope.playing = true;
         } else {
-          $scope.playing = false;
+          //$scope.playing = false;
         }
       },true);
 

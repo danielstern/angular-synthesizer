@@ -3,7 +3,8 @@
   "private": true,
   "dependencies": {
     "bootstrap": "~3.2.0",
-    "angular": "~1.2.25"
+    "angular": "~1.2.25",
+    "angular-touch": "~1.2.25"
   },
   "devDependencies": {
     "angular": "~1.2.25"

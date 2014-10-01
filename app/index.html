@@ -22,6 +22,7 @@
     height: 100px;
     width: 32px;
     background-color: white;
+    -webkit-user-drag: none;
 }
 .keyboard .key:nth-child(12n-3),
 .keyboard .key:nth-child(12n-5),
@@ -49,7 +50,6 @@
 .key.playing {
     background-color: sandybrown !important;
 }
-
 </style>
 
 <body ng-app=ngSynthKeyboard>
@@ -60,14 +60,14 @@
         <synth note=C4 scale="harmonic minor">
 
             <div keyboard class="keyboard">
-                <button key ng-repeat="tone in tones" ng-class="{'mouseover':mouseover,'playing':playing}" tone=tone class='key'> 
-                    
+                <button key ng-repeat="tone in tones" ng-class="{'mouseover':mouseover,'playing':playing}" ng-click="touchkey()" tone=tone class='key'>
+
                     <oscillator tone=tone playing=playing wave=TRIANGLE interval="1">
                     </oscillator>
 
                     <oscillator tone=tone playing=playing wave=SAWTOOTH interval="1">
                     </oscillator>
-<!-- 
+<!--
                     <oscillator tone=tone playing=playing wave=SQUARE interval="1">
                     </oscillator> -->
 
@@ -75,7 +75,7 @@
 
             </div>
 
-    
+
 
 
     </div>
@@ -86,8 +86,8 @@
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
